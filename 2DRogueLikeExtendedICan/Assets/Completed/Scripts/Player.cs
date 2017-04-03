@@ -178,15 +178,28 @@ namespace Completed
 			//Check if the tag of the trigger collided with is Exit.
 			if(other.tag == "Exit")
 			{
+                GameManager.instance.SaveLevel();
+
 				//Invoke the Restart function to start the next level with a delay of restartLevelDelay (default 1 second).
 				Invoke ("Restart", restartLevelDelay);
 				
 				//Disable the player object since level is over.
 				enabled = false;
 			}
-			
-			//Check if the tag of the trigger collided with is Food.
-			else if(other.tag == "Food")
+
+            //Check if the tag of the trigger collided with is Exit.
+            if (other.tag == "Entrance")
+            {
+                GameManager.instance.level -= 2;
+                //Invoke the Restart function to start the next level with a delay of restartLevelDelay (default 1 second).
+                Invoke("Restart", restartLevelDelay);
+
+                //Disable the player object since level is over.
+                enabled = false;
+            }
+
+            //Check if the tag of the trigger collided with is Food.
+            else if(other.tag == "Food")
 			{
 				//Add pointsPerFood to the players current food total.
 				food += pointsPerFood;
@@ -217,10 +230,9 @@ namespace Completed
 				other.gameObject.SetActive (false);
 			}
 		}
-		
-		
-		//Restart reloads the scene when called.
-		private void Restart ()
+
+        //Restart reloads the scene when called.
+        private void Restart ()
 		{
 			//Load the last scene loaded, in this case Main, the only scene in the game. And we load it in "Single" mode so it replace the existing one
             //and not load all the scene object in the current scene.

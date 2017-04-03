@@ -6,12 +6,18 @@ namespace Completed
 {
 	using System.Collections.Generic;		//Allows us to use Lists. 
 	using UnityEngine.UI;					//Allows us to use UI.
-	
-	public class GameManager : MonoBehaviour
+
+    public struct Level
+    {
+        public string seed;
+        public int[,] map;
+    }
+
+    public class GameManager : MonoBehaviour
 	{
 		public float levelStartDelay = 2f;						//Time to wait before starting level, in seconds.
 		public float turnDelay = 0.1f;							//Delay between each Player turn.
-		public int playerFoodPoints = 100;						//Starting value for Player food points.
+		public int playerFoodPoints = 500;						//Starting value for Player food points.
 		public static GameManager instance = null;				//Static instance of GameManager which allows it to be accessed by any other script.
 		[HideInInspector] public bool playersTurn = true;		//Boolean to check if it's players turn, hidden in inspector but public.
 		
@@ -19,15 +25,17 @@ namespace Completed
 		private Text levelText;									//Text to display current level number.
 		private GameObject levelImage;							//Image to block out level as levels are being set up, background for levelText.
 		private BoardManager boardScript;						//Store a reference to our BoardManager which will set up the level.
-		private int level = 1;									//Current level number, expressed in game as "Day 1".
+		public int level = 1;									//Current level number, expressed in game as "Day 1".
 		private List<Enemy> enemies;							//List of all Enemy units, used to issue them move commands.
 		private bool enemiesMoving;								//Boolean to check if enemies are moving.
-		private bool doingSetup = true;							//Boolean to check if we're setting up board, prevent Player from moving during setup.
-		
-		
-		
-		//Awake is always called before any Start functions
-		void Awake()
+		private bool doingSetup = true;                         //Boolean to check if we're setting up board, prevent Player from moving during setup.
+
+        public List<Level> levels = new List<Level>();
+        public CaveGenerator CaveGen = null;
+        public int[,] currentMap;
+
+        //Awake is always called before any Start functions
+        void Awake()
 		{
             //Check if instance already exists
             if (instance == null)
@@ -49,9 +57,20 @@ namespace Completed
 			
 			//Get a component reference to the attached BoardManager script
 			boardScript = GetComponent<BoardManager>();
-			
-			//Call the InitGame function to initialize the first level 
-			InitGame();
+
+            if (CaveGen == null)
+            {
+                CaveGen = this.gameObject.GetComponent<CaveGenerator>();
+            }
+
+            if (CaveGen == null)
+            {
+                this.gameObject.AddComponent<CaveGenerator>();
+                CaveGen = this.gameObject.GetComponent<CaveGenerator>();
+            }
+
+            //Call the InitGame function to initialize the first level 
+            InitGame();
 		}
 
         //this is called only once, and the paramter tell it to be called only after the scene was loaded
@@ -70,7 +89,14 @@ namespace Completed
             instance.InitGame();
         }
 
-		
+		public void SaveLevel()
+        {
+            Level _level = new Level();
+            _level.map = currentMap;
+            _level.seed = levels[level - 1].seed;
+            levels[level - 1] = _level;
+        }
+
 		//Initializes the game for each level.
 		void InitGame()
 		{
@@ -94,6 +120,27 @@ namespace Completed
 			
 			//Clear any Enemy objects in our List to prepare for next level.
 			enemies.Clear();
+
+            if (levels.Count >= level)
+            {
+                // The level should already exist
+                CaveGen.useRandomSeed = false;
+                CaveGen.randomSeed = levels[level - 1].seed;
+                currentMap = levels[level - 1].map;
+                CaveGen.GenerateMap(boardScript.columns, boardScript.rows);
+            }
+            else
+            {
+                // Generate a new random map.
+                CaveGen.useRandomSeed = true;
+                CaveGen.GenerateMap(boardScript.columns, boardScript.rows);
+                // new map
+                Level _level = new Level();
+                _level.seed = CaveGen.randomSeed;
+                _level.map = CaveGen.map;
+                currentMap = CaveGen.map;
+                levels.Add(_level);
+            }
 			
 			//Call the SetupScene function of the BoardManager script, pass it current level number.
 			boardScript.SetupScene(level);

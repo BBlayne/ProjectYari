@@ -35,8 +35,17 @@ namespace Completed
 			
 			//If hit points are less than or equal to zero:
 			if(hp <= 0)
+            {
 				//Disable the gameObject.
 				gameObject.SetActive (false);
+
+                Vector3 m_pos = this.gameObject.transform.position;
+
+                int x = (int)m_pos.x;
+                int y = (int)m_pos.y;
+                GameManager.instance.currentMap[x, y] = 0;
+            }
+
 		}
 	}
 }

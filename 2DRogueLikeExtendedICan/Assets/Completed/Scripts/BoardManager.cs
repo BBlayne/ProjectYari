@@ -4,8 +4,7 @@ using System.Collections.Generic; 		//Allows us to use Lists.
 using Random = UnityEngine.Random; 		//Tells Random to use the Unity Engine random number generator.
 
 namespace Completed
-{
-	
+{	
 	public class BoardManager : MonoBehaviour
 	{
 		// Using Serializable allows us to embed a class with sub properties in the inspector.
@@ -13,8 +12,7 @@ namespace Completed
 		public class Count
 		{
 			public int minimum; 			//Minimum value for our Count class.
-			public int maximum; 			//Maximum value for our Count class.
-			
+			public int maximum; 			//Maximum value for our Count class.			
 			
 			//Assignment constructor.
 			public Count (int min, int max)
@@ -22,14 +20,14 @@ namespace Completed
 				minimum = min;
 				maximum = max;
 			}
-		}
-		
+		}		
 		
 		public int columns = 8; 										//Number of columns in our game board.
 		public int rows = 8;											//Number of rows in our game board.
 		public Count wallCount = new Count (5, 9);						//Lower and upper limit for our random number of walls per level.
 		public Count foodCount = new Count (1, 5);						//Lower and upper limit for our random number of food items per level.
 		public GameObject exit;											//Prefab to spawn for exit.
+        public GameObject entrance;
 		public GameObject[] floorTiles;									//Array of floor prefabs.
 		public GameObject[] wallTiles;									//Array of wall prefabs.
 		public GameObject[] foodTiles;									//Array of food prefabs.
@@ -41,7 +39,9 @@ namespace Completed
 
         public GameObject player = null;
 
-        public CaveGenerator CaveGen;
+        //public CaveGenerator CaveGen;
+        
+
 		//Clears our list gridPositions and prepares it to generate a new board.
 		void InitialiseList ()
 		{
@@ -132,18 +132,23 @@ namespace Completed
 		//SetupScene initializes our level and calls the previous functions to lay out the game board
 		public void SetupScene (int level)
 		{
+            /*
             if (CaveGen == null)
             {
-                CaveGen = FindObjectOfType<CaveGenerator>();
+                //CaveGen = FindObjectOfType<CaveGenerator>();
             }
 
             if (CaveGen == null)
-                Debug.Log("Error");
-            else
-                CaveGen.GenerateMap(columns, rows);
+            {
+                //Debug.Log("Error: CaveGenerator does not exist in the scene, added it.");
+                //this.gameObject.AddComponent<CaveGenerator>();
+                //CaveGen = this.gameObject.GetComponent<CaveGenerator>();
+            }
+            */
+            //CaveGen.GenerateMap(columns, rows);
 
-			//Creates the outer walls and floor.
-			BoardSetup ();
+            //Creates the outer walls and floor.
+            BoardSetup ();
 			
 			//Reset our list of gridpositions.
 			InitialiseList ();
@@ -159,9 +164,6 @@ namespace Completed
 			//Determine number of enemies based on current level number, based on a logarithmic progression
 			int enemyCount = (int)Mathf.Log(level, 2f);
 			
-			//Instantiate a random number of enemies based on minimum and maximum, at randomized positions.
-			LayoutObjectAtRandom (enemyTiles, enemyCount, enemyCount);
-			
 			//Instantiate the exit tile in the upper right hand corner of our game board
 			//Instantiate (exit, new Vector3 (columns - 1, rows - 1, 0f), Quaternion.identity);
 
@@ -169,15 +171,18 @@ namespace Completed
 
             PlaceExit();
 
-		}
+            //Instantiate a random number of enemies based on minimum and maximum, at randomized positions.
+            LayoutObjectAtRandom(enemyTiles, enemyCount, enemyCount);
+
+        }
 
         private void PlaceExit()
         {
-            for (int x = columns - 1; x > 0; x--)
+            for (int x = columns - 1; x >= 0; x--)
             {
-                for (int y = 1; y < rows - 1; y++)
+                for (int y = rows - 1; y >= 0; y--)
                 {
-                    if (CaveGen.map[x, y] == 0)
+                    if (GameManager.instance.currentMap[x, y] == 0)
                     {
                         Vector3 pos = new Vector3(x, y, 0);
                         // SpawnPlayer()
@@ -191,16 +196,23 @@ namespace Completed
 
         private void PlacePlayer()
         {
-            for (int x = 1; x < columns - 1; x++)
+            for (int x = 0; x < columns; x++)
             {
-                for (int y = rows - 1; y > 0; y--)
+                for (int y = 0; y < rows; y++)
                 {
-                    if (CaveGen.map[x, y] == 0)
+                    if (GameManager.instance.currentMap[x, y] == 0)
                     {
                         Vector3 pos = new Vector3(x, y, 0);
                         // SpawnPlayer()
                         GameObject _player = Instantiate(player, pos, Quaternion.identity)
                             as GameObject;
+
+                        if (GameManager.instance.level > 1)
+                        {
+                            GameObject _entrace = Instantiate(entrance, pos, Quaternion.identity)
+                                as GameObject;
+                        }
+
                         return;
                     }
                 }
@@ -209,11 +221,13 @@ namespace Completed
 
         private void LayoutMapObjects()
         {
-            for (int x = 1; x < columns - 1; x++)
+            GameObject board = GameObject.Find("Board");
+
+            for (int x = 0; x < columns; x++)
             {
-                for (int y = 1; y < rows - 1; y++)
+                for (int y = 0; y < rows; y++)
                 {
-                    switch (CaveGen.map[x,y])
+                    switch (GameManager.instance.currentMap[x,y])
                     {
                         case 0:
                             // Floor tile, we do nothing
@@ -223,6 +237,8 @@ namespace Completed
                             Vector3 mapPosition = new Vector3(x, y, 0);
                             GameObject tileChoice = wallTiles[UnityEngine.Random.Range
                                 (0, wallTiles.Length)];
+
+                            tileChoice.name = "Wall["+ x + "," + y + "]";
                             Instantiate(tileChoice, mapPosition, Quaternion.identity);
                             break;
                         default:

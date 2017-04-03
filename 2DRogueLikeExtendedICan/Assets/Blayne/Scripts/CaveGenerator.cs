@@ -16,10 +16,10 @@ public class CaveGenerator : MonoBehaviour {
     public int TilesThreshold2 = 2;
 
     [Range(0, 5)]
-    public int smoothIterations = 5;
+    public int smoothIterations = 3;
 
     [Range(0, 5)]
-    public int smoothIterations2 = 5;
+    public int smoothIterations2 = 1;
 
     public string randomSeed = "Blayne";
     public bool useRandomSeed = false;
@@ -33,7 +33,7 @@ public class CaveGenerator : MonoBehaviour {
     };
 
     [Range(0, 100)]
-    public int fillPercentage = 50;
+    public int fillPercentage = 32;
 
     private void ResizeCamera()
     {
