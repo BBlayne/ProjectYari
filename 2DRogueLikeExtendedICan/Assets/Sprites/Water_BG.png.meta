@@ -1,0 +1,317 @@
+fileFormatVersion: 2
+guid: 07ef9fe21bd4edf4aa3bb0c3e7e48a3d
+timeCreated: 1490401817
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: Water_BG_0
+    21300002: Water_BG_1
+    21300004: Water_BG_2
+    21300006: Water_BG_3
+    21300008: Water_BG_4
+    21300010: Water_BG_5
+    21300012: Water_BG_6
+    21300014: Water_BG_7
+    21300016: Water_BG_8
+    21300018: Water_BG_9
+    21300020: Water_BG_10
+    21300022: Water_BG_11
+    21300024: Water_BG_12
+    21300026: Water_BG_13
+    21300028: Water_BG_14
+    21300030: Water_BG_15
+    21300032: Water_BG_16
+    21300034: Water_BG_17
+    21300036: Water_BG_18
+    21300038: Water_BG_19
+    21300040: Water_BG_20
+    21300042: Water_BG_21
+    21300044: Water_BG_22
+    21300046: Water_BG_23
+    21300048: Water_BG_24
+    21300050: Water_BG_25
+    21300052: Water_BG_26
+    21300054: Water_BG_27
+    21300056: Water_BG_28
+    21300058: Water_BG_29
+    21300060: Water_BG_30
+    21300062: Water_BG_31
+    21300064: Water_BG_32
+    21300066: Water_BG_33
+    21300068: Water_BG_34
+    21300070: Water_BG_35
+    21300072: Water_BG_36
+    21300074: Water_BG_37
+    21300076: Water_BG_38
+    21300078: Water_BG_39
+    21300080: Water_BG_40
+    21300082: Water_BG_41
+    21300084: Water_BG_42
+    21300086: Water_BG_43
+    21300088: Water_BG_44
+    21300090: Water_BG_45
+    21300092: Water_BG_46
+    21300094: Water_BG_47
+    21300096: Water_BG_48
+    21300098: Water_BG_49
+    21300100: Water_BG_50
+    21300102: Water_BG_51
+    21300104: Water_BG_52
+    21300106: Water_BG_53
+    21300108: Water_BG_54
+    21300110: Water_BG_55
+    21300112: Water_BG_56
+    21300114: Water_BG_57
+    21300116: Water_BG_58
+    21300118: Water_BG_59
+    21300120: Water_BG_60
+    21300122: Water_BG_61
+    21300124: Water_BG_62
+    21300126: Water_BG_63
+    21300128: Water_BG_64
+    21300130: Water_BG_65
+    21300132: Water_BG_66
+    21300134: Water_BG_67
+    21300136: Water_BG_68
+    21300138: Water_BG_69
+    21300140: Water_BG_70
+    21300142: Water_BG_71
+    21300144: Water_BG_72
+    21300146: Water_BG_73
+    21300148: Water_BG_74
+    21300150: Water_BG_75
+    21300152: Water_BG_76
+    21300154: Water_BG_77
+    21300156: Water_BG_78
+    21300158: Water_BG_79
+    21300160: Water_BG_80
+    21300162: Water_BG_81
+    21300164: Water_BG_82
+    21300166: Water_BG_83
+    21300168: Water_BG_84
+    21300170: Water_BG_85
+    21300172: Water_BG_86
+    21300174: Water_BG_87
+    21300176: Water_BG_88
+    21300178: Water_BG_89
+    21300180: Water_BG_90
+    21300182: Water_BG_91
+    21300184: Water_BG_92
+    21300186: Water_BG_93
+    21300188: Water_BG_94
+    21300190: Water_BG_95
+    21300192: Water_BG_96
+    21300194: Water_BG_97
+    21300196: Water_BG_98
+    21300198: Water_BG_99
+  serializedVersion: 4
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: -1
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Standalone
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: iPhone
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Android
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: WebGL
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Water_BG_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 220
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Water_BG_1
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 220
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Water_BG_2
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 220
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Water_BG_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 120
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Water_BG_4
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 120
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Water_BG_5
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 120
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Water_BG_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 20
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Water_BG_7
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 20
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Water_BG_8
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 20
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
