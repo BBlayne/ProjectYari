@@ -4,17 +4,30 @@ using System.Collections;
 namespace Completed
 {
 	//Enemy inherits from MovingObject, our base class for objects that can move, Player also inherits from this.
-	public class Enemy : MovingObject
+	public class Enemy : MovingObject, IDamageable<int>, IKillable, IAttack
 	{
 		public int playerDamage; 							//The amount of food points to subtract from the player when attacking.
 		public AudioClip attackSound1;						//First of two audio clips to play when attacking the player.
-		public AudioClip attackSound2;						//Second of two audio clips to play when attacking the player.
-		
-		
+		public AudioClip attackSound2;                      //Second of two audio clips to play when attacking the player.
+        public int wallDamage = 5;
+        public bool isDead = false;
 		private Animator animator;							//Variable of type Animator to store a reference to the enemy's Animator component.
 		private Transform target;							//Transform to attempt to move toward each turn.
-		private bool skipMove;								//Boolean to determine whether or not enemy should skip a turn or move this turn.
-		
+		private bool skipMove;                              //Boolean to determine whether or not enemy should skip a turn or move this turn.
+        [SerializeField]
+        private int hpRemaining = 2;        
+        public int HPRemaining {
+            get
+            {
+                return hpRemaining;
+            }
+            set
+            {
+                this.hpRemaining = value;
+                if (this.hpRemaining <= 0)
+                    this.Kill();
+            }
+        }
 		
 		//Start overrides the virtual Start function of the base class.
 		protected override void Start ()
@@ -25,6 +38,11 @@ namespace Completed
 			
 			//Get and store a reference to the attached Animator component.
 			animator = GetComponent<Animator> ();
+
+            if (animator == null)
+            {
+                animator = this.gameObject.GetComponentInChildren<Animator>();
+            }
 			
 			//Find the Player GameObject using it's tag and store a reference to its transform component.
 			target = GameObject.FindGameObjectWithTag ("Player").transform;
@@ -57,6 +75,7 @@ namespace Completed
 		//MoveEnemy is called by the GameManger each turn to tell each Enemy to try to move towards the player.
 		public void MoveEnemy ()
 		{
+            if (isDead) return;
 			//Declare variables for X and Y axis move directions, these range from -1 to 1.
 			//These values allow us to choose between the cardinal directions: up, down, left and right.
 			int xDir = 0;
@@ -72,9 +91,11 @@ namespace Completed
 			else
 				//Check if target x position is greater than enemy's x position, if so set x direction to 1 (move right), if not set to -1 (move left).
 				xDir = target.position.x > transform.position.x ? 1 : -1;
-			
+
+            //Debug.Log("xDir: " + xDir + "," + "yDir: " + yDir);
 			//Call the AttemptMove function and pass in the generic parameter Player, because Enemy is moving and expecting to potentially encounter a Player
 			AttemptMove <Player> (xDir, yDir);
+            Attack(xDir, yDir);
 		}
 		
 		
@@ -82,17 +103,61 @@ namespace Completed
 		//and takes a generic parameter T which we use to pass in the component we expect to encounter, in this case Player
 		protected override void OnCantMove <T> (T component)
 		{
+
 			//Declare hitPlayer and set it to equal the encountered component.
 			Player hitPlayer = component as Player;
 			
 			//Call the LoseFood function of hitPlayer passing it playerDamage, the amount of foodpoints to be subtracted.
-			hitPlayer.LoseFood (playerDamage);
-			
-			//Set the attack trigger of animator to trigger Enemy attack animation.
-			animator.SetTrigger ("enemyAttack");
+			//hitPlayer.LoseFood (playerDamage);
+            hitPlayer.TakeDamage(playerDamage);	
+
+            //Set the attack trigger of animator to trigger Enemy attack animation.
+            animator.SetTrigger("enemyAttack");
 			
 			//Call the RandomizeSfx function of SoundManager passing in the two audio clips to choose randomly between.
 			SoundManager.instance.RandomizeSfx (attackSound1, attackSound2);
 		}
+
+        public void TakeDamage(int damageTaken)
+        {
+            HPRemaining -= damageTaken;            
+        }
+
+        public void Kill()
+        {
+            isDead = true;
+            //Disable the gameObject.
+            gameObject.SetActive(false);
+        }
+
+        public void Attack(int xDir, int yDir)
+        {
+            //Hit will store whatever our linecast hits when Move is called.
+            RaycastHit2D hit;
+
+            //Store start position to move from, based on objects current transform position.
+            Vector2 start = transform.position;
+
+            // Calculate end position based on the direction parameters passed in when calling Move.
+            Vector2 end = start + new Vector2(xDir, yDir);
+
+            //Disable the boxCollider so that linecast doesn't hit this object's own collider.
+            this.gameObject.GetComponent<BoxCollider2D>().enabled = false;
+            //Cast a line from start point to end point checking collision on blockingLayer.
+            hit = Physics2D.Linecast(start, end, blockingLayer);
+
+            this.gameObject.GetComponent<BoxCollider2D>().enabled = true;
+
+            if (hit.transform)
+            {
+                Wall wall = hit.transform.GetComponent<Wall>();
+
+                if (wall != null)
+                {
+                    wall.TakeDamage(wallDamage);
+                    animator.SetTrigger("enemyAttack");
+                }
+            }
+        }
 	}
 }

@@ -7,14 +7,6 @@ public class BasicBitMaskBoard : MonoBehaviour {
 
     public GameObject basicTile;
 
-    int index;
-
-    // 4-Directional values
-    int north_tile_4D = 1;
-    int east_tile_4D = 2;
-    int south_tile_4D = 4;
-    int west_tile_4D = 8;
-
     int[,] test_map =
     {
         {1,1,1,1 },

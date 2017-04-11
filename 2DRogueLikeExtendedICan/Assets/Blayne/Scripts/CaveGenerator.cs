@@ -23,6 +23,8 @@ public class CaveGenerator : MonoBehaviour {
 
     public string randomSeed = "Blayne";
     public bool useRandomSeed = false;
+    [Range(0, 100)]
+    public int fillPercentage = 32;
 
     public MapTypes mapMode = MapTypes.CAVE;
 
@@ -32,12 +34,11 @@ public class CaveGenerator : MonoBehaviour {
         MAZE
     };
 
-    [Range(0, 100)]
-    public int fillPercentage = 32;
+
 
     private void ResizeCamera()
     {
-        Camera.main.orthographicSize = mapHeight / 2;
+        //Camera.main.orthographicSize = mapHeight / 2;
     }
 
     private void Start()
@@ -246,16 +247,16 @@ public class CaveGenerator : MonoBehaviour {
             {
                 for (int y = 0; y < mapHeight; y++)
                 {
-
+                    /*
                     Gizmos.color = (map[x, y] == 1) ? Color.black : Color.white;
 
                     Vector3 pos = new Vector3(-mapWidth / 2 + x + 0.5f,
                         mapHeight / 2 - y + 0.5f,
                         0);
 
-                    //Gizmos.DrawCube(pos, Vector3.one);
+                    Gizmos.DrawCube(pos, Vector3.one);
 
-
+                    */
                 }
             }
         }

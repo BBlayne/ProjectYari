@@ -148,7 +148,7 @@ public class ConwaysGameOfLife : MonoBehaviour {
     public string randomSeed = "Blayne";
     public bool useRandomSeed = false;
 
-    private static int threadCount = 0;
+    //private static int threadCount = 0;
 
     [Range(0, 100)]
     public int fillPercentage = 10;

@@ -19,14 +19,15 @@ namespace Completed
 		public float turnDelay = 0.1f;							//Delay between each Player turn.
 		public int playerFoodPoints = 500;						//Starting value for Player food points.
 		public static GameManager instance = null;				//Static instance of GameManager which allows it to be accessed by any other script.
-		[HideInInspector] public bool playersTurn = true;		//Boolean to check if it's players turn, hidden in inspector but public.
-		
-		
+		[HideInInspector] public bool playersTurn = true;       //Boolean to check if it's players turn, hidden in inspector but public.
+
+        private Text foodText; // foodText displays the current amount of food
 		private Text levelText;									//Text to display current level number.
 		private GameObject levelImage;							//Image to block out level as levels are being set up, background for levelText.
 		private BoardManager boardScript;						//Store a reference to our BoardManager which will set up the level.
 		public int level = 1;									//Current level number, expressed in game as "Day 1".
 		private List<Enemy> enemies;							//List of all Enemy units, used to issue them move commands.
+        
 		private bool enemiesMoving;								//Boolean to check if enemies are moving.
 		private bool doingSetup = true;                         //Boolean to check if we're setting up board, prevent Player from moving during setup.
 
@@ -97,6 +98,19 @@ namespace Completed
             levels[level - 1] = _level;
         }
 
+
+        // GameManager will now handle updating the 
+        // current amount of food,
+        // by adjusting the text field, of the
+        // foodtext Text component.
+        public void UpdateFood(string foodString)
+        {
+            if (foodText != null)
+            {
+                foodText.text = foodString;
+            }
+        }
+
 		//Initializes the game for each level.
 		void InitGame()
 		{
@@ -105,9 +119,12 @@ namespace Completed
 			
 			//Get a reference to our image LevelImage by finding it by name.
 			levelImage = GameObject.Find("LevelImage");
-			
-			//Get a reference to our text LevelText's text component by finding it by name and calling GetComponent.
-			levelText = GameObject.Find("LevelText").GetComponent<Text>();
+
+            foodText = GameObject.Find("FoodText").GetComponent<Text>();
+            foodText.text = "Food: " + playerFoodPoints;
+
+            //Get a reference to our text LevelText's text component by finding it by name and calling GetComponent.
+            levelText = GameObject.Find("LevelText").GetComponent<Text>();
 			
 			//Set the text of levelText to the string "Day" and append the current level number.
 			levelText.text = "Day " + level;
@@ -121,6 +138,10 @@ namespace Completed
 			//Clear any Enemy objects in our List to prepare for next level.
 			enemies.Clear();
 
+            CaveGen.useRandomSeed = true;
+            CaveGen.GenerateMap(boardScript.columns, boardScript.rows);
+            currentMap = CaveGen.map;
+            /*
             if (levels.Count >= level)
             {
                 // The level should already exist
@@ -141,9 +162,10 @@ namespace Completed
                 currentMap = CaveGen.map;
                 levels.Add(_level);
             }
-			
-			//Call the SetupScene function of the BoardManager script, pass it current level number.
-			boardScript.SetupScene(level);
+            */
+
+            //Call the SetupScene function of the BoardManager script, pass it current level number.
+            boardScript.SetupScene(level);
 			
 		}
 		

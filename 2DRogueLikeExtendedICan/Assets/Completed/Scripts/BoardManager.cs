@@ -32,13 +32,13 @@ namespace Completed
 		public GameObject[] wallTiles;									//Array of wall prefabs.
 		public GameObject[] foodTiles;									//Array of food prefabs.
 		public GameObject[] enemyTiles;									//Array of enemy prefabs.
-		public GameObject[] outerWallTiles;								//Array of outer tile prefabs.
-		
+		public GameObject[] outerWallTiles;                             //Array of outer tile prefabs.
+        public GameObject[] bossTiles;
 		private Transform boardHolder;									//A variable to store a reference to the transform of our Board object.
 		private List <Vector3> gridPositions = new List <Vector3> ();   //A list of possible locations to place tiles.
 
         public GameObject player = null;
-
+        public GameObject temp;
         //public CaveGenerator CaveGen;
         
 
@@ -132,21 +132,30 @@ namespace Completed
 		//SetupScene initializes our level and calls the previous functions to lay out the game board
 		public void SetupScene (int level)
 		{
+            temp = GameObject.Find("Board");
             /*
+            // If the variable, "CaveGen" is null.
+            // Try to find a GameObject, in the scene, that has
+            // "CaveGenerator" attached. And then assign it
+            // to the variable CaveGen.
             if (CaveGen == null)
             {
-                //CaveGen = FindObjectOfType<CaveGenerator>();
+                CaveGen = FindObjectOfType<CaveGenerator>();
             }
-
+            // If, CaveGen is STILL null,
+            // We're going to add the CaveGenerator script
+            // to "this" to the current gameObject that exists
+            // in the scene.
             if (CaveGen == null)
             {
-                //Debug.Log("Error: CaveGenerator does not exist in the scene, added it.");
-                //this.gameObject.AddComponent<CaveGenerator>();
-                //CaveGen = this.gameObject.GetComponent<CaveGenerator>();
+                Debug.Log("Error: CaveGenerator does not exist in the" +
+                    "scene, added it.");
+                this.gameObject.AddComponent<CaveGenerator>();
+                CaveGen = this.gameObject.GetComponent<CaveGenerator>();
             }
+            // Generate a new random map of size columns by rows.
+            CaveGen.GenerateMap(columns, rows);
             */
-            //CaveGen.GenerateMap(columns, rows);
-
             //Creates the outer walls and floor.
             BoardSetup ();
 			
@@ -162,7 +171,13 @@ namespace Completed
 			LayoutObjectAtRandom (foodTiles, foodCount.minimum, foodCount.maximum);
 			
 			//Determine number of enemies based on current level number, based on a logarithmic progression
-			int enemyCount = (int)Mathf.Log(level, 2f);
+			int enemyCount = (int)Mathf.Log(level, 2f) + 1;
+
+            if (level > 4)
+            {
+                int BossCount = (int)Mathf.Log(level, 2f) / 2;
+                LayoutObjectAtRandom(bossTiles, BossCount, BossCount);
+            }
 			
 			//Instantiate the exit tile in the upper right hand corner of our game board
 			//Instantiate (exit, new Vector3 (columns - 1, rows - 1, 0f), Quaternion.identity);
@@ -186,8 +201,9 @@ namespace Completed
                     {
                         Vector3 pos = new Vector3(x, y, 0);
                         // SpawnPlayer()
-                        GameObject _exit = Instantiate(exit, pos, Quaternion.identity)
-                            as GameObject;
+                        //GameObject _exit = Instantiate(exit, pos, Quaternion.identity)
+                        //    as GameObject;
+                        Instantiate(exit, pos, Quaternion.identity);
                         return;
                     }
                 }
@@ -196,6 +212,8 @@ namespace Completed
 
         private void PlacePlayer()
         {
+            // Iterating from bottom left of the grid
+            // to the top right of the grid.
             for (int x = 0; x < columns; x++)
             {
                 for (int y = 0; y < rows; y++)
@@ -204,14 +222,14 @@ namespace Completed
                     {
                         Vector3 pos = new Vector3(x, y, 0);
                         // SpawnPlayer()
-                        GameObject _player = Instantiate(player, pos, Quaternion.identity)
-                            as GameObject;
-
-                        if (GameManager.instance.level > 1)
-                        {
-                            GameObject _entrace = Instantiate(entrance, pos, Quaternion.identity)
-                                as GameObject;
-                        }
+                        //GameObject _player = Instantiate(player, pos, Quaternion.identity)
+                            //as GameObject;
+                        Instantiate(player, pos, Quaternion.identity);
+                        //if (GameManager.instance.level > 1)
+                        //{
+                        //    GameObject _entrace = Instantiate(entrance, pos, Quaternion.identity)
+                        //        as GameObject;
+                        //}
 
                         return;
                     }
@@ -221,7 +239,6 @@ namespace Completed
 
         private void LayoutMapObjects()
         {
-            GameObject board = GameObject.Find("Board");
 
             for (int x = 0; x < columns; x++)
             {
@@ -238,8 +255,9 @@ namespace Completed
                             GameObject tileChoice = wallTiles[UnityEngine.Random.Range
                                 (0, wallTiles.Length)];
 
-                            tileChoice.name = "Wall["+ x + "," + y + "]";
-                            Instantiate(tileChoice, mapPosition, Quaternion.identity);
+                            GameObject m_gObj = Instantiate(tileChoice, mapPosition, Quaternion.identity) as GameObject;
+                            m_gObj.name = "Wall[" + x + "," + y + "]";
+                            m_gObj.transform.parent = temp.transform;
                             break;
                         default:
                             break;
